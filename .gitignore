@@ -137,7 +137,7 @@ env.bak/
 venv.bak/
 
 # pyKAN
-pykan/
+notebooks/model
 
 # Spyder project settings
 .spyderproject

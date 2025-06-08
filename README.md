@@ -15,6 +15,7 @@ This repository provides a structured and reproducible pipeline for modeling and
 
 ## 📁 Project Structure
 
+```text
 /KAN-WQI-Analysis/
 ├── data/
 │   ├── raw/                   # Original data files (CSV)
@@ -39,6 +40,7 @@ This repository provides a structured and reproducible pipeline for modeling and
 │
 ├── README.md                 # Project description and usage
 └── requirements.txt          # Dependencies
+```
 ---
 
 ## 🔧 Requirements

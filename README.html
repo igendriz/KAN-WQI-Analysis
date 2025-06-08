@@ -139,18 +139,18 @@
         </head>
         <body class="vscode-body vscode-light">
             <h1 id="interpretable-water-quality-analysis-using-kolmogorov-arnold-networks-kan">Interpretable Water Quality Analysis Using Kolmogorov-Arnold Networks (KAN)</h1>
-<p>This repository contains a structured and reproducible pipeline for analyzing water quality time series data using <strong>Kolmogorov-Arnold Networks (KAN)</strong>. The goal is to demonstrate how KAN can provide interpretable, data-driven models for predicting the <strong>Water Quality Index (WQI)</strong> based on sensor measurements such as pH, total dissolved solids (TDS), and temperature.</p>
+<p>This repository provides a structured and reproducible pipeline for modeling and interpreting water quality time series using <strong>Kolmogorov-Arnold Networks (KAN)</strong>. The project demonstrates how KAN models can be applied to sensor data (pH, temperature, TDS) to predict the <strong>Water Quality Index (WQI)</strong> through interpretable symbolic expressions.</p>
 <hr>
 <h2 id="-project-objectives">📌 Project Objectives</h2>
 <ul>
-<li>Train and evaluate KAN models on IoT-based water quality data</li>
-<li>Derive symbolic expressions representing learned input-output relationships</li>
-<li>Assess performance using regression metrics (MAE, RMSE, R²)</li>
-<li>Explore feature sparsification and model pruning for sensor optimization</li>
+<li>Train and evaluate symbolic regression models using KAN</li>
+<li>Derive human-readable symbolic expressions relating input features to WQI</li>
+<li>Assess model performance using regression metrics (MAE, RMSE, R²)</li>
+<li>Explore model sparsification for sensor reduction and deployment optimization</li>
 </ul>
 <hr>
 <h2 id="-project-structure">📁 Project Structure</h2>
-<p>/KAN-WQI-Analysis/
+<pre><code class="language-text">/KAN-WQI-Analysis/
 ├── data/
 │   ├── raw/                   # Original data files (CSV)
 │   └── processed/            # Cleaned, interpolated, and smoothed CSVs
@@ -160,9 +160,9 @@
 │   └── Evaluate_Models.ipynb      # Performance metrics and result plots
 │
 ├── scripts/
-│   ├── <a href="http://preprocessing.py">preprocessing.py</a>      # Data cleaning pipeline
+│   ├── preprocessing.py      # Data cleaning pipeline
 │   ├── train_model.py        # Training routines for KAN models
-│   └── <a href="http://evaluation.py">evaluation.py</a>         # Regression metrics and utility functions
+│   └── evaluation.py         # Regression metrics and utility functions
 │
 ├── models/
 │   ├── saved_weights/        # Trained model weights
@@ -172,46 +172,53 @@
 ├── results/
 │   └── figures/              # Heatmaps, architecture, prediction plots
 │
-├── <a href="http://README.html">README.md</a>                 # Project description and usage
-└── requirements.txt          # Dependencies</p>
+├── README.md                 # Project description and usage
+└── requirements.txt          # Dependencies
+</code></pre>
 <hr>
 <h2 id="-requirements">🔧 Requirements</h2>
-<p>Install dependencies using:</p>
-<p>bash
-pip install -r requirements.txt</p>
+<p>Install Python dependencies using:</p>
+<pre><code class="language-bash">pip install -r requirements.txt
+</code></pre>
+<blockquote>
+<p>Note: For LaTeX-rendered plot labels in <code>matplotlib</code>, a system-level LaTeX installation (e.g., <a href="https://miktex.org/">MiKTeX</a> or TeX Live) is recommended.</p>
+</blockquote>
 <hr>
 <h2 id="-quick-start">🚀 Quick Start</h2>
 <ol>
-<li><strong>Preprocess Data</strong></li>
-</ol>
-<p>bash
-python scripts/preprocessing.py</p>
-<ol start="2">
-<li><strong>Train Models</strong></li>
-</ol>
-<p>bash
-python scripts/train_model.py</p>
-<ol start="3">
-<li><strong>Evaluate Models</strong> Run Evaluate_Models.ipynb to visualize predictions and compare symbolic outputs.</li>
+<li>
+<p><strong>Preprocess the dataset</strong>:</p>
+<pre><code class="language-bash">python scripts/preprocessing.py
+</code></pre>
+</li>
+<li>
+<p><strong>Train the KAN model</strong>:</p>
+<pre><code class="language-bash">python scripts/train_model.py
+</code></pre>
+</li>
+<li>
+<p><strong>Evaluate results</strong>:
+Open and run <code>notebooks/Evaluate_Models.ipynb</code> to visualize predictions and inspect symbolic outputs.</p>
+</li>
 </ol>
 <hr>
 <h2 id="-outputs">📊 Outputs</h2>
 <ul>
-<li>Symbolic equations extracted from trained KAN models</li>
-<li>Comparative performance metrics (MAE, RMSE, R²)</li>
-<li>Exploratory heatmaps using correlation and mutual information</li>
+<li>Symbolic expressions automatically extracted from trained KAN models</li>
+<li>Evaluation metrics: MAE, RMSE, R²</li>
+<li>Visualization of input-output relationships and feature influence (e.g., correlation, mutual information heatmaps)</li>
 </ul>
 <hr>
 <h2 id="-license">📜 License</h2>
-<p>This project is open-source and available under the MIT License.</p>
+<p>This project is licensed under the <strong>MIT License</strong>. See the <code>LICENSE</code> file for details.</p>
 <hr>
 <h2 id="-contact">📬 Contact</h2>
-<p>Ignacio Sánchez-Gendriz
+<p><strong>Ignacio Sánchez-Gendriz</strong>
 For inquiries, please contact via GitHub or institutional email.</p>
 <hr>
 <h2 id="-references">📚 References</h2>
 <ul>
-<li>Liu, S. et al. (2024). <em>Kolmogorov-Arnold Networks</em>.</li>
+<li>Liu, S. et al. (2024). <em>Kolmogorov-Arnold Networks</em>. arXiv preprint.</li>
 <li>Siswanto et al. (2023). <em>Dataset for water quality monitoring in aquaponics</em>. Mendeley Data.</li>
 </ul>
 
