@@ -41,7 +41,7 @@ During installation:
 
 ### Windows (example using system-installed Python 3.9.7):
 ```powershell
-C:\Users\soyig\AppData\Local\Programs\Python\Python397\python.exe -m venv venv
+C:\Users\user\AppData\Local\Programs\Python\Python397\python.exe -m venv venv
 .\venv\Scripts\activate
 ```
 
