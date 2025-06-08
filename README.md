@@ -1,21 +1,20 @@
 # Interpretable Water Quality Analysis Using Kolmogorov-Arnold Networks (KAN)
 
-This repository contains a structured and reproducible pipeline for analyzing water quality time series data using **Kolmogorov-Arnold Networks (KAN)**. The goal is to demonstrate how KAN can provide interpretable, data-driven models for predicting the **Water Quality Index (WQI)** based on sensor measurements such as pH, total dissolved solids (TDS), and temperature.
+This repository provides a structured and reproducible pipeline for modeling and interpreting water quality time series using **Kolmogorov-Arnold Networks (KAN)**. The project demonstrates how KAN models can be applied to sensor data (pH, temperature, TDS) to predict the **Water Quality Index (WQI)** through interpretable symbolic expressions.
 
 ---
 
 ## 📌 Project Objectives
 
-* Train and evaluate KAN models on IoT-based water quality data
-* Derive symbolic expressions representing learned input-output relationships
-* Assess performance using regression metrics (MAE, RMSE, R²)
-* Explore feature sparsification and model pruning for sensor optimization
+* Train and evaluate symbolic regression models using KAN
+* Derive human-readable symbolic expressions relating input features to WQI
+* Assess model performance using regression metrics (MAE, RMSE, R²)
+* Explore model sparsification for sensor reduction and deployment optimization
 
 ---
 
 ## 📁 Project Structure
 
-```
 /KAN-WQI-Analysis/
 ├── data/
 │   ├── raw/                   # Original data files (CSV)
@@ -40,60 +39,61 @@ This repository contains a structured and reproducible pipeline for analyzing wa
 │
 ├── README.md                 # Project description and usage
 └── requirements.txt          # Dependencies
-```
-
 ---
 
 ## 🔧 Requirements
 
-Install dependencies using:
+Install Python dependencies using:
 
 ```bash
 pip install -r requirements.txt
-```
+````
+
+> Note: For LaTeX-rendered plot labels in `matplotlib`, a system-level LaTeX installation (e.g., [MiKTeX](https://miktex.org/) or TeX Live) is recommended.
 
 ---
 
 ## 🚀 Quick Start
 
-1. **Preprocess Data**
+1. **Preprocess the dataset**:
 
    ```bash
    python scripts/preprocessing.py
    ```
 
-2. **Train Models**
+2. **Train the KAN model**:
 
    ```bash
    python scripts/train_model.py
    ```
 
-3. **Evaluate Models** Run `Evaluate_Models.ipynb` to visualize predictions and compare symbolic outputs.
+3. **Evaluate results**:
+   Open and run `notebooks/Evaluate_Models.ipynb` to visualize predictions and inspect symbolic outputs.
 
 ---
 
 ## 📊 Outputs
 
-* Symbolic equations extracted from trained KAN models
-* Comparative performance metrics (MAE, RMSE, R²)
-* Exploratory heatmaps using correlation and mutual information
+* Symbolic expressions automatically extracted from trained KAN models
+* Evaluation metrics: MAE, RMSE, R²
+* Visualization of input-output relationships and feature influence (e.g., correlation, mutual information heatmaps)
 
 ---
 
 ## 📜 License
 
-This project is open-source and available under the MIT License.
+This project is licensed under the **MIT License**. See the `LICENSE` file for details.
 
 ---
 
 ## 📬 Contact
 
-Ignacio Sánchez-Gendriz
+**Ignacio Sánchez-Gendriz**
 For inquiries, please contact via GitHub or institutional email.
 
 ---
 
 ## 📚 References
 
-* Liu, S. et al. (2024). *Kolmogorov-Arnold Networks*.
+* Liu, S. et al. (2024). *Kolmogorov-Arnold Networks*. arXiv preprint.
 * Siswanto et al. (2023). *Dataset for water quality monitoring in aquaponics*. Mendeley Data.

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>Interpretable Water Quality Analysis Using Kolmogorov-Arnold Networks &lpar;KAN&rpar;</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="interpretable-water-quality-analysis-using-kolmogorov-arnold-networks-kan">Interpretable Water Quality Analysis Using Kolmogorov-Arnold Networks (KAN)</h1>
+<p>This repository contains a structured and reproducible pipeline for analyzing water quality time series data using <strong>Kolmogorov-Arnold Networks (KAN)</strong>. The goal is to demonstrate how KAN can provide interpretable, data-driven models for predicting the <strong>Water Quality Index (WQI)</strong> based on sensor measurements such as pH, total dissolved solids (TDS), and temperature.</p>
+<hr>
+<h2 id="-project-objectives">📌 Project Objectives</h2>
+<ul>
+<li>Train and evaluate KAN models on IoT-based water quality data</li>
+<li>Derive symbolic expressions representing learned input-output relationships</li>
+<li>Assess performance using regression metrics (MAE, RMSE, R²)</li>
+<li>Explore feature sparsification and model pruning for sensor optimization</li>
+</ul>
+<hr>
+<h2 id="-project-structure">📁 Project Structure</h2>
+<p>/KAN-WQI-Analysis/
+├── data/
+│   ├── raw/                   # Original data files (CSV)
+│   └── processed/            # Cleaned, interpolated, and smoothed CSVs
+│
+├── notebooks/
+│   ├── EDA_Preprocessing.ipynb    # Visual exploration and preprocessing
+│   └── Evaluate_Models.ipynb      # Performance metrics and result plots
+│
+├── scripts/
+│   ├── <a href="http://preprocessing.py">preprocessing.py</a>      # Data cleaning pipeline
+│   ├── train_model.py        # Training routines for KAN models
+│   └── <a href="http://evaluation.py">evaluation.py</a>         # Regression metrics and utility functions
+│
+├── models/
+│   ├── saved_weights/        # Trained model weights
+│   ├── history/              # Training/validation loss curves
+│   └── model_cards/          # Descriptive model documentation
+│
+├── results/
+│   └── figures/              # Heatmaps, architecture, prediction plots
+│
+├── <a href="http://README.html">README.md</a>                 # Project description and usage
+└── requirements.txt          # Dependencies</p>
+<hr>
+<h2 id="-requirements">🔧 Requirements</h2>
+<p>Install dependencies using:</p>
+<p>bash
+pip install -r requirements.txt</p>
+<hr>
+<h2 id="-quick-start">🚀 Quick Start</h2>
+<ol>
+<li><strong>Preprocess Data</strong></li>
+</ol>
+<p>bash
+python scripts/preprocessing.py</p>
+<ol start="2">
+<li><strong>Train Models</strong></li>
+</ol>
+<p>bash
+python scripts/train_model.py</p>
+<ol start="3">
+<li><strong>Evaluate Models</strong> Run Evaluate_Models.ipynb to visualize predictions and compare symbolic outputs.</li>
+</ol>
+<hr>
+<h2 id="-outputs">📊 Outputs</h2>
+<ul>
+<li>Symbolic equations extracted from trained KAN models</li>
+<li>Comparative performance metrics (MAE, RMSE, R²)</li>
+<li>Exploratory heatmaps using correlation and mutual information</li>
+</ul>
+<hr>
+<h2 id="-license">📜 License</h2>
+<p>This project is open-source and available under the MIT License.</p>
+<hr>
+<h2 id="-contact">📬 Contact</h2>
+<p>Ignacio Sánchez-Gendriz
+For inquiries, please contact via GitHub or institutional email.</p>
+<hr>
+<h2 id="-references">📚 References</h2>
+<ul>
+<li>Liu, S. et al. (2024). <em>Kolmogorov-Arnold Networks</em>.</li>
+<li>Siswanto et al. (2023). <em>Dataset for water quality monitoring in aquaponics</em>. Mendeley Data.</li>
+</ul>
+
+            
+            
+        </body>
+        </html>
