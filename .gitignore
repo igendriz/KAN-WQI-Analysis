@@ -138,6 +138,7 @@ venv.bak/
 
 # pyKAN
 notebooks/model
+notebooks/figures
 
 # Spyder project settings
 .spyderproject
