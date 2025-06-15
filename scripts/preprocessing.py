@@ -158,6 +158,14 @@ def apply_single_pole_filter(df, cols_to_smooth, alpha=0.1):
 
     return df_smoothed
 
+def compute_quality_ratings(water_pH, TDS, water_temp):
+    # Compute quality ratings (q_i)
+    q_pH = ((water_pH - 7) / (8.5 - 7)) * 100
+    q_TDS = (1 - (TDS / 500)) * 100
+    q_Temp = (1 - abs(water_temp - 26) / 3) * 100
+    return q_pH, q_TDS, q_Temp
+    
+
 def compute_wqi_from_values(water_pH, TDS, water_temp):
     """
     Compute Water Quality Index (WQI) from individual water parameter values.
@@ -176,10 +184,9 @@ def compute_wqi_from_values(water_pH, TDS, water_temp):
     float
         Computed WQI value (0 to 100).
     """
+    
     # Compute quality ratings (q_i)
-    q_pH = ((water_pH - 7) / (8.5 - 7)) * 100
-    q_TDS = (1 - (TDS / 500)) * 100
-    q_Temp = (1 - abs(water_temp - 26) / 3) * 100
+    q_pH, q_TDS, q_Temp = compute_quality_ratings(water_pH, TDS, water_temp)
 
     # Define weights (inverse of permissible values)
     w_pH = 1 / 8.5
@@ -191,5 +198,40 @@ def compute_wqi_from_values(water_pH, TDS, water_temp):
     # WQI = (w_pH * q_pH + w_TDS * q_TDS + w_Temp * q_Temp) / (w_pH + w_TDS + w_Temp)
 
     WQI = np.dot(Ws,qs)/np.sum(Ws)
+
+    return WQI
+
+def compute_wqm_from_values(water_pH, TDS, water_temp):
+    """
+    Compute Water Quality Index (WQI) from individual water parameter values.
+
+    Parameters:
+    -----------
+    water_pH : float
+        Measured pH value.
+    TDS : float
+        Measured Total Dissolved Solids (mg/L).
+    water_temp : float
+        Measured water temperature (°C).
+
+    Returns:
+    --------
+    float
+        Computed WQI value (0 to 100).
+    """
+    
+    # Compute quality ratings (q_i)
+    q_pH, q_TDS, q_Temp = compute_quality_ratings(water_pH, TDS, water_temp)
+
+    # Define weights (inverse of permissible values)
+    w_pH = 1 / 8.5
+    w_TDS = 1 / 500
+    w_Temp = 1 / 3
+
+    Ws, qs = np.array([w_pH, w_TDS, w_Temp]), np.array([q_pH, q_TDS, q_Temp])
+    # Compute WQI
+    # WQI = (w_pH * q_pH + w_TDS * q_TDS + w_Temp * q_Temp) / (w_pH + w_TDS + w_Temp)
+
+    WQI = np.sqrt(np.dot(Ws,qs**2))
 
     return WQI
