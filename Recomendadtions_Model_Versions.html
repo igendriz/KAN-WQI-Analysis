@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#x2705; Objective</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h2 id="-objective">✅ Objective</h2>
+<p>If you want to:</p>
+<ol>
+<li><strong>Train</strong> a KAN model with 3 inputs.</li>
+<li><strong>Extract symbolic expression</strong> (without altering the trained model).</li>
+<li><strong>Prune the model</strong> to reduce the number of inputs (e.g., from 3 → 2).</li>
+<li><strong>Extract symbolic expression again</strong> from the pruned model.</li>
+</ol>
+<hr>
+<h2 id="-general-strategy-use-auto_savetrue-and-rely-on-versioned-checkpoints">🔁 General Strategy: Use <code>auto_save=True</code> and rely on versioned checkpoints.</h2>
+<p>Each step that alters the model (training, pruning, etc.) will <strong>automatically save</strong> a new version in <code>./model/</code>.</p>
+<p>We’ll use <code>rewind()</code> to restore a version when needed and keep things clean.</p>
+<hr>
+<h2 id="-step-by-step-implementation">🔢 Step-by-step Implementation</h2>
+<hr>
+<h3 id="-step-1--train-a-model-with-3-inputs">🔹 <strong>Step 1 — Train a model with 3 inputs</strong></h3>
+<pre><code class="language-python"><span class="hljs-keyword">from</span> kan <span class="hljs-keyword">import</span> create_dataset, KAN
+<span class="hljs-keyword">import</span> torch
+
+<span class="hljs-comment"># Set up</span>
+device = torch.device(<span class="hljs-string">&#x27;cuda&#x27;</span> <span class="hljs-keyword">if</span> torch.cuda.is_available() <span class="hljs-keyword">else</span> <span class="hljs-string">&#x27;cpu&#x27;</span>)
+dataset = create_dataset(f, n_var=<span class="hljs-number">3</span>, device=device)  <span class="hljs-comment"># 3-input function</span>
+
+<span class="hljs-comment"># Initialize model with auto_save ON</span>
+model = KAN(width=[<span class="hljs-number">3</span>, <span class="hljs-number">10</span>, <span class="hljs-number">1</span>], grid=<span class="hljs-number">5</span>, k=<span class="hljs-number">3</span>, seed=<span class="hljs-number">1</span>, auto_save=<span class="hljs-literal">True</span>, device=device)
+
+<span class="hljs-comment"># Train the model</span>
+model.fit(dataset, opt=<span class="hljs-string">&quot;LBFGS&quot;</span>, steps=<span class="hljs-number">100</span>)
+
+<span class="hljs-comment"># Result: model saved as version 0.1 (original trained model)</span>
+</code></pre>
+<hr>
+<h3 id="-step-2--extract-symbolic-expression-non-destructive">🔹 <strong>Step 2 — Extract symbolic expression (non-destructive)</strong></h3>
+<pre><code class="language-python"><span class="hljs-comment"># Rewind to the trained version 0.1 (if needed)</span>
+model_symb = model.rewind(<span class="hljs-string">&#x27;0.1&#x27;</span>)  <span class="hljs-comment"># model_symb is version 1.1</span>
+
+<span class="hljs-comment"># Activate symbolic extraction</span>
+model_symb.save_act = <span class="hljs-literal">True</span>
+_ = model_symb(dataset.train_input)  <span class="hljs-comment"># Forward pass to populate internal states</span>
+
+<span class="hljs-comment"># Extract symbolic formula</span>
+model_symb.auto_symbolic(lib=[<span class="hljs-string">&#x27;x&#x27;</span>, <span class="hljs-string">&#x27;x^2&#x27;</span>, <span class="hljs-string">&#x27;log&#x27;</span>, <span class="hljs-string">&#x27;sin&#x27;</span>, <span class="hljs-string">&#x27;sqrt&#x27;</span>])
+formula = model_symb.symbolic_formula()[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
+</code></pre>
+<p>✅ The original model remains unchanged because you extracted on a rewinded instance.</p>
+<hr>
+<h3 id="-step-3--prune-model-to-reduce-inputs-eg-to-2-inputs">🔹 <strong>Step 3 — Prune model to reduce inputs (e.g., to 2 inputs)</strong></h3>
+<pre><code class="language-python"><span class="hljs-comment"># Rewind again to clean trained model before pruning</span>
+model_pruned = model.rewind(<span class="hljs-string">&#x27;0.1&#x27;</span>)  <span class="hljs-comment"># model_pruned is version 2.1</span>
+
+<span class="hljs-comment"># Apply pruning</span>
+model_pruned = model_pruned.prune()  <span class="hljs-comment"># Automatically saved as version 2.2</span>
+
+<span class="hljs-comment"># (Optional) Evaluate which inputs were removed:</span>
+<span class="hljs-comment"># ...</span>
+</code></pre>
+<p>Now you have a new model that may depend on only 2 inputs.</p>
+<hr>
+<h3 id="-step-4--extract-symbolic-expression-from-pruned-model">🔹 <strong>Step 4 — Extract symbolic expression from pruned model</strong></h3>
+<pre><code class="language-python">model_pruned.save_act = <span class="hljs-literal">True</span>
+_ = model_pruned(dataset.train_input)  <span class="hljs-comment"># Forward pass to fill activations</span>
+
+model_pruned.auto_symbolic(lib=[<span class="hljs-string">&#x27;x&#x27;</span>, <span class="hljs-string">&#x27;x^2&#x27;</span>, <span class="hljs-string">&#x27;log&#x27;</span>, <span class="hljs-string">&#x27;sin&#x27;</span>, <span class="hljs-string">&#x27;sqrt&#x27;</span>])
+pruned_formula = model_pruned.symbolic_formula()[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>]
+</code></pre>
+<hr>
+<h2 id="-summary-table">✅ Summary Table</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Description</th>
+<th>Model Version</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Train base model with 3 inputs</td>
+<td><code>0.1</code></td>
+</tr>
+<tr>
+<td>2</td>
+<td>Rewind + symbolic extraction (safe)</td>
+<td><code>1.1</code></td>
+</tr>
+<tr>
+<td>3</td>
+<td>Rewind + prune to 2 inputs</td>
+<td><code>2.2</code></td>
+</tr>
+<tr>
+<td>4</td>
+<td>Symbolic extraction of pruned model</td>
+<td>(on <code>2.2</code>)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-final-notes">🧠 Final Notes</h2>
+<ul>
+<li>
+<p><strong>Avoid using <code>.copy()</code></strong> unless you know internal states are correctly handled.</p>
+</li>
+<li>
+<p><strong>Use <code>rewind()</code></strong> before symbolic/pruning steps.</p>
+</li>
+<li>
+<p>Use <strong><code>.symbolic_formula()</code> only after <code>.auto_symbolic()</code></strong> and a forward pass.</p>
+</li>
+<li>
+<p>At any point, you can load a specific version for inference using:</p>
+<pre><code class="language-python">model = KAN.loadckpt(<span class="hljs-string">&#x27;./model/0.1&#x27;</span>)
+</code></pre>
+</li>
+</ul>
+
+            
+            
+        </body>
+        </html>

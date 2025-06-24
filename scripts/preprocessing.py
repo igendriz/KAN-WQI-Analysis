@@ -158,6 +158,41 @@ def apply_single_pole_filter(df, cols_to_smooth, alpha=0.1):
 
     return df_smoothed
 
+def apply_single_pole_filtfilt(df, cols_to_smooth, alpha=0.1):
+    """
+    Apply a zero-phase (non-recursive) single-pole low-pass filter using filtfilt.
+
+    Parameters:
+    -----------
+    df : pd.DataFrame
+        Input DataFrame with time series data.
+
+    cols_to_smooth : list
+        List of column names to apply zero-phase smoothing.
+
+    alpha : float
+        Smoothing factor (0 < alpha ≤ 1). Controls the cutoff behavior.
+
+    Returns:
+    --------
+    pd.DataFrame
+        A DataFrame with smoothed values using filtfilt (zero-phase response).
+    """
+
+    # Define IIR filter coefficients for single-pole low-pass filter
+    b = [alpha]                # numerator coefficients
+    a = [1, -(1 - alpha)]      # denominator coefficients (recursive)
+
+    df_smoothed = df.copy()
+
+    for col in cols_to_smooth:
+        x = df[col].values
+        # Apply zero-phase filtering (forward and backward)
+        y = filtfilt(b, a, x, method='pad')
+        df_smoothed[col] = y
+
+    return df_smoothed
+
 def compute_quality_ratings(water_pH, TDS, water_temp):
     # Compute quality ratings (q_i)
     q_pH = ((water_pH - 7) / (8.5 - 7)) * 100
@@ -203,7 +238,7 @@ def compute_wqi_from_values(water_pH, TDS, water_temp):
 
 def compute_wqm_from_values(water_pH, TDS, water_temp):
     """
-    Compute Water Quality Index (WQI) from individual water parameter values.
+    Compute Water Quality Index (WQI) using a weighted root-mean-square formulation.
 
     Parameters:
     -----------
@@ -217,21 +252,129 @@ def compute_wqm_from_values(water_pH, TDS, water_temp):
     Returns:
     --------
     float
-        Computed WQI value (0 to 100).
+        Computed WQI value (0 to 100 scale).
     """
-    
-    # Compute quality ratings (q_i)
+    # Compute individual quality scores
     q_pH, q_TDS, q_Temp = compute_quality_ratings(water_pH, TDS, water_temp)
 
-    # Define weights (inverse of permissible values)
+    # Define weights (e.g., inverse of permissible or standard limits)
     w_pH = 1 / 8.5
     w_TDS = 1 / 500
     w_Temp = 1 / 3
 
-    Ws, qs = np.array([w_pH, w_TDS, w_Temp]), np.array([q_pH, q_TDS, q_Temp])
-    # Compute WQI
-    # WQI = (w_pH * q_pH + w_TDS * q_TDS + w_Temp * q_Temp) / (w_pH + w_TDS + w_Temp)
+    # Stack into shape (N, 3)
+    qs = np.column_stack([q_pH, q_TDS, q_Temp])
+    Ws = np.array([w_pH, w_TDS, w_Temp])
 
-    WQI = np.sqrt(np.dot(Ws,qs**2))
+    # Weighted Quadratic Mean - WQI
+    WQI = np.sqrt(np.sum(qs**2 * Ws, axis=1))
 
     return WQI
+
+def compute_wqiRMS_from_values(water_pH, TDS, water_temp):
+    """
+    Compute Water Quality Index (WQI) using a weighted root-mean-square formulation.
+
+    Parameters:
+    -----------
+    water_pH : float
+        Measured pH value.
+    TDS : float
+        Measured Total Dissolved Solids (mg/L).
+    water_temp : float
+        Measured water temperature (°C).
+
+    Returns:
+    --------
+    float
+        Computed WQI value (0 to 100 scale).
+    """
+    # Compute individual quality scores
+    q_pH, q_TDS, q_Temp = compute_quality_ratings(water_pH, TDS, water_temp)
+
+    # Define weights (e.g., inverse of permissible or standard limits)
+    w_pH = 1 / 8.5
+    w_TDS = 1 / 500
+    w_Temp = 1 / 3
+
+    # Stack into shape (N, 3)
+    qs = np.column_stack([q_pH, q_TDS, q_Temp])
+    Ws = np.array([w_pH, w_TDS, w_Temp])
+
+    # Weighted RMS calculation
+    # Compute weighted RMS WQI from quality scores (qs: shape [N, 3])
+    WQI_RMS = np.sqrt(np.mean(qs**2 *Ws, axis=1))
+
+    return WQI_RMS
+
+def select_time_slice_df(df, cols=None, start_date=None, end_date=None):
+    """
+    Select a time-based slice from a DataFrame using the 'created_date' column and optional column filtering.
+
+    Parameters:
+    -----------
+    df : pd.DataFrame
+        Input DataFrame. Must contain a 'created_date' column of datetime type.
+
+    cols : list of str or None, optional
+        List of columns to retain in addition to 'created_date'.
+        If None, all columns are retained.
+        Any column not found in the DataFrame will be ignored silently (except 'created_date').
+
+    start_date : str or pd.Timestamp or None, optional
+        Start of the time window. If None, selection starts from the earliest timestamp.
+
+    end_date : str or pd.Timestamp or None, optional
+        End of the time window. If None, selection continues to the latest timestamp.
+
+    Returns:
+    --------
+    df_selected : pd.DataFrame
+        A new DataFrame sliced by time and filtered by columns, always retaining 'created_date'.
+
+    Raises:
+    -------
+    ValueError:
+        If 'created_date' is not in the DataFrame or if start_date > end_date.
+
+    Example:
+    --------
+    df_selected = select_time_slice_df(
+        df_agg_min,
+        cols=['temperature', 'TDS'],
+        start_date='2023-01-30 12:00:00',
+        end_date='2023-02-01 00:00:00'
+    )
+    """
+    import pandas as pd
+
+    # Ensure 'created_date' column exists
+    if 'created_date' not in df.columns:
+        raise ValueError("Input DataFrame must contain a 'created_date' column.")
+
+    # Convert dates to Timestamps if needed
+    if start_date is not None:
+        start_date = pd.to_datetime(start_date)
+    else:
+        start_date = df['created_date'].min()
+
+    if end_date is not None:
+        end_date = pd.to_datetime(end_date)
+    else:
+        end_date = df['created_date'].max()
+
+    # Check date validity
+    if start_date > end_date:
+        raise ValueError("start_date must be earlier than or equal to end_date.")
+
+    # Filter by time window
+    mask = (df['created_date'] >= start_date) & (df['created_date'] <= end_date)
+    df_filtered = df.loc[mask].copy().reset_index(drop=True)
+
+    # Determine final columns
+    if cols is None:
+        selected_columns = df_filtered.columns.tolist()
+    else:
+        selected_columns = ['created_date'] + [col for col in cols if col in df_filtered.columns and col != 'created_date']
+
+    return df_filtered[selected_columns]

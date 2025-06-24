@@ -9,3 +9,4 @@ pandas==2.0.1
 seaborn
 pyyaml
 ipykernel>=6.0.0
+lazypredict==0.2.12
