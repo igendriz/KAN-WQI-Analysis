@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#x1f4c4; Model Card&colon; Kolmogorov&ndash;Arnold Networks &lpar;KAN&rpar; for Water Quality Index Prediction</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="-model-card-kolmogorovarnold-networks-kan-for-water-quality-index-prediction">📄 Model Card: Kolmogorov–Arnold Networks (KAN) for Water Quality Index Prediction</h1>
+<p>This model card documents two data-driven models developed using <strong>Kolmogorov–Arnold Networks (KANs)</strong> to predict the <strong>Water Quality Index (WQI)</strong> in aquaponic ponds from IoT sensor data. The models include:</p>
+<ul>
+<li><strong>KAN (Full)</strong>: Uses all three input variables: pH, water temperature, and total dissolved solids (TDS).</li>
+<li><strong>KAN (Pruned)</strong>: A reduced version that uses only two variables (pH and temperature), discarding TDS based on data-driven feature relevance.</li>
+</ul>
+<hr>
+<h2 id="-model-overview">🧠 Model Overview</h2>
+<p>Both models are based on the <strong>Kolmogorov–Arnold Network (KAN)</strong> architecture, which uses <strong>edge-based activation functions</strong> instead of traditional node activations. This structure enables the extraction of <strong>interpretable symbolic expressions</strong> that approximate the learned functions in a human-readable form.</p>
+<p>The symbolic expressions for both the full and pruned models were <strong>automatically extracted</strong> using built-in functionalities provided by the <a href="https://github.com/KindXiaoming/pykan"><code>pykan</code></a> package, ensuring consistency between the model’s internal representation and its symbolic approximation.</p>
+<p>The <strong>pruned model</strong> was obtained by removing <strong>TDS</strong> as an input variable, based on <code>pykan</code> functionalities, which was also confirmed by statistical and mutual information analyses that indicated its <strong>limited relevance</strong> for WQI prediction in the case study of the used dataset. Despite the reduced input dimensionality, the pruned model maintained predictive performance compared to the full model.</p>
+<p>All model implementations and training routines were developed using the <strong><code>pykan</code> library</strong>, which is openly documented and maintained on GitHub.</p>
+<hr>
+<h2 id="-dataset-description">📊 Dataset Description</h2>
+<ul>
+<li>
+<p><strong>Source</strong>:
+<a href="https://doi.org/10.1016/j.dib.2023.109248">A simple dataset of water quality on aquaponic fish ponds based on an internet of things measurement device</a></p>
+</li>
+<li>
+<p><strong>Sensor Variables</strong>:</p>
+<ul>
+<li><code>pH</code>: Water pH</li>
+<li><code>water_temp</code>: Water temperature (°C)</li>
+<li><code>TDS</code>: Total dissolved solids (ppm)</li>
+</ul>
+</li>
+<li>
+<p><strong>Target Variable</strong>:</p>
+<ul>
+<li><code>WQI</code>: Computed using a weighted formulation with domain-specific normalization and aggregation procedures.</li>
+</ul>
+</li>
+<li>
+<p><strong>Preprocessing Steps</strong>:</p>
+<ul>
+<li>Temporal smoothing</li>
+<li>Outlier removal</li>
+<li>Interpolation</li>
+<li>Normalization to standardized WQI scale</li>
+</ul>
+</li>
+<li>
+<p><strong>Splits</strong>:</p>
+<ul>
+<li>Training: 70%</li>
+<li>Validation: 15%</li>
+<li>Test: 15%</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>For more details on the <strong>preprocessing steps</strong> and <strong>data split methodology</strong>, refer to the accompanying <a href="https://www.preprints.org/manuscript/202505.1650/v1">preprint manuscript</a>, which describes the full experimental pipeline used in this study.</p>
+</blockquote>
+<hr>
+<h2 id="️-model-details">⚙️ Model Details</h2>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Inputs</th>
+<th>Parameters</th>
+<th>Symbolic Expression Available</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KAN (Full)</td>
+<td>pH, temp, TDS</td>
+<td>✅</td>
+<td>✅</td>
+<td>Original 3-input model</td>
+</tr>
+<tr>
+<td>KAN (Pruned)</td>
+<td>pH, temp</td>
+<td>✅</td>
+<td>✅</td>
+<td>Discards TDS</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-performance-test-set">📈 Performance (Test Set)</h2>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>R²</th>
+<th>MAE</th>
+<th>RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KAN (Full)</td>
+<td>0.9945</td>
+<td>0.5262</td>
+<td>0.9476</td>
+</tr>
+<tr>
+<td>Symbolic (Full)</td>
+<td>0.9820</td>
+<td>0.8062</td>
+<td>1.7227</td>
+</tr>
+<tr>
+<td>KAN (Pruned)</td>
+<td>0.9647</td>
+<td>2.3221</td>
+<td>2.4076</td>
+</tr>
+<tr>
+<td>Symbolic (Pruned)</td>
+<td>0.9868</td>
+<td>0.5221</td>
+<td>1.4718</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-intended-use">✅ Intended Use</h2>
+<p>These models are intended for:</p>
+<ul>
+<li>Low-complexity, data-driven WQI prediction in aquaponics and freshwater systems</li>
+<li>Applications where sensor limitations exist and <strong>interpretability is critical</strong></li>
+<li>Environments requiring symbolic models for transparency, audits, or hybrid physical/data modeling</li>
+</ul>
+<hr>
+<h2 id="️-limitations-and-scope-of-applicability">⚠️ Limitations and scope of applicability</h2>
+<ul>
+<li>The results are contextualized within the specific <strong>WQI formulation</strong>, <strong>normalization strategies</strong>, and <strong>dataset characteristics</strong> used in this study. In particular, the reduced relevance of <strong>TDS</strong> as a predictor may be influenced by the applied normalization or by the dataset’s empirical properties.</li>
+<li>The <strong>feature pruning</strong> (removal of TDS) reflects insights derived from this specific dataset and modeling context, and may not generalize without further validation.</li>
+<li>While the methodology—based on symbolic extraction, model pruning, and statistical evaluation—is broadly applicable, its <strong>generalization to other datasets</strong>, <strong>WQI formulations</strong>, or <strong>IoT sensor configurations</strong> requires re-application and re-validation of the full pipeline.</li>
+</ul>
+<hr>
+<h2 id="-reproducibility">🧪 Reproducibility</h2>
+<ul>
+<li>Source code: <code>/scripts/</code>, <code>/notebooks/</code></li>
+<li>Trained models: <code>/notebooks/case-study_01/Train_Evaluate_Models01.ipnb/</code></li>
+<li>Symbolic expressions: included in <code>/notebooks/case-study_01/Train_Evaluate_Models01.ipnb/</code></li>
+<li>Performance metrics: saved in <code>models/model_cards/01_kan_performance_WA-WQI.csv</code></li>
+</ul>
+
+            
+            
+        </body>
+        </html>

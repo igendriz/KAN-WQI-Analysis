@@ -64,12 +64,11 @@ All model implementations and training routines were developed using the **`pyka
 
 | Model             | R²     | MAE    | RMSE   |
 | ----------------- | ------ | ------ | ------ |
-| KAN (Full)        | 0.9862 | 0.7306 | 1.6330 |
-| Symbolic (Full)   | 0.9862 | 0.7322 | 1.6344 |
-| KAN (Pruned)      | 0.9899 | 0.4695 | 1.3959 |
-| Symbolic (Pruned) | 0.9899 | 0.4706 | 1.3963 |
+| KAN (Full)        | 0.9945 | 0.5262 | 0.9476 |
+| Symbolic (Full)   | 0.9820 | 0.8062 | 1.7227 |
+| KAN (Pruned)      | 0.9647 | 2.3221 | 2.4076 |
+| Symbolic (Pruned) | 0.9868 | 0.5221 | 1.4718 |
 
-> 🔍 The pruned model slightly outperforms the full model, while symbolic expressions match their respective model predictions with negligible loss.
 
 ---
 
@@ -94,6 +93,6 @@ These models are intended for:
 ## 🧪 Reproducibility
 
 * Source code: `/scripts/`, `/notebooks/`
-* Trained models: `/notebooks/Train_Evaluate_Models.ipnb/`
-* Symbolic expressions: included in `/notebooks/Train_Evaluate_Models.ipnb/`
-* Performance metrics: saved in `kan_performance_summary.csv`
+* Trained models: `/notebooks/case-study_01/Train_Evaluate_Models01.ipnb/`
+* Symbolic expressions: included in `/notebooks/case-study_01/Train_Evaluate_Models01.ipnb/`
+* Performance metrics: saved in `models/model_cards/01_kan_performance_WA-WQI.csv`
