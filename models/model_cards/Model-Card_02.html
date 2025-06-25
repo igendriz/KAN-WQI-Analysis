@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <title>&#x1f4c4; Model Card&colon; Weighted Quadratic Mean &lpar;WQM&rpar; Models for Water Quality Index Prediction</title>
+            <style>
+/* From extension vscode.github */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+.vscode-dark img[src$=\#gh-light-mode-only],
+.vscode-light img[src$=\#gh-dark-mode-only],
+.vscode-high-contrast:not(.vscode-high-contrast-light) img[src$=\#gh-light-mode-only],
+.vscode-high-contrast-light img[src$=\#gh-dark-mode-only] {
+	display: none;
+}
+
+</style>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+<link href="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/markdown.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Microsoft/vscode/extensions/markdown-language-features/media/highlight.css">
+<style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe WPC', 'Segoe UI', system-ui, 'Ubuntu', 'Droid Sans', sans-serif;
+                font-size: 14px;
+                line-height: 1.6;
+            }
+        </style>
+        <style>
+.task-list-item {
+    list-style-type: none;
+}
+
+.task-list-item-checkbox {
+    margin-left: -20px;
+    vertical-align: middle;
+    pointer-events: none;
+}
+</style>
+<style>
+:root {
+  --color-note: #0969da;
+  --color-tip: #1a7f37;
+  --color-warning: #9a6700;
+  --color-severe: #bc4c00;
+  --color-caution: #d1242f;
+  --color-important: #8250df;
+}
+
+</style>
+<style>
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-note: #2f81f7;
+    --color-tip: #3fb950;
+    --color-warning: #d29922;
+    --color-severe: #db6d28;
+    --color-caution: #f85149;
+    --color-important: #a371f7;
+  }
+}
+
+</style>
+<style>
+.markdown-alert {
+  padding: 0.5rem 1rem;
+  margin-bottom: 16px;
+  color: inherit;
+  border-left: .25em solid #888;
+}
+
+.markdown-alert>:first-child {
+  margin-top: 0
+}
+
+.markdown-alert>:last-child {
+  margin-bottom: 0
+}
+
+.markdown-alert .markdown-alert-title {
+  display: flex;
+  font-weight: 500;
+  align-items: center;
+  line-height: 1
+}
+
+.markdown-alert .markdown-alert-title .octicon {
+  margin-right: 0.5rem;
+  display: inline-block;
+  overflow: visible !important;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: var(--color-note);
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: var(--color-important);
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: var(--color-warning);
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: var(--color-tip);
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: var(--color-caution);
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: var(--color-caution);
+}
+
+</style>
+        
+        </head>
+        <body class="vscode-body vscode-light">
+            <h1 id="-model-card-weighted-quadratic-mean-wqm-models-for-water-quality-index-prediction">📄 Model Card: Weighted Quadratic Mean (WQM) Models for Water Quality Index Prediction</h1>
+<p>This model card documents a set of <strong>baseline models</strong> based on <strong>Weighted Quadratic Mean (WQM)</strong> aggregation techniques for predicting the <strong>Water Quality Index (WQI)</strong> in aquaponic systems using IoT sensor measurements. These models serve as <strong>mathematically grounded baselines</strong>, using pre-defined transformations and parameterized weights to compute WQI from three water quality indicators:</p>
+<ul>
+<li>pH</li>
+<li>Water temperature</li>
+<li>Total Dissolved Solids (TDS)</li>
+</ul>
+<p>The WQM approach models WQI as a <strong>nonlinear combination of normalized quality scores</strong> using a quadratic mean (root mean square) aggregation:</p>
+<p class="katex-block"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mtext>WQI</mtext><mtext>WQM</mtext></msub><mo>=</mo><msqrt><mrow><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>w</mi><mi>i</mi></msub><mo>⋅</mo><msubsup><mi>q</mi><mi>i</mi><mn>2</mn></msubsup></mrow></msqrt></mrow><annotation encoding="application/x-tex">\text{WQI}_{\text{WQM}} = \sqrt{ \sum_{i} w_i \cdot q_i^2 }
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0636em;vertical-align:-0.3802em;"></span><span class="mord"><span class="mord text"><span class="mord">WQI</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.2342em;"><span style="top:-2.4559em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">WQM</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.3802em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:3.04em;vertical-align:-1.52em;"></span><span class="mord sqrt"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.52em;"><span class="svg-align" style="top:-5em;"><span class="pstrut" style="height:5em;"></span><span class="mord" style="padding-left:1em;"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.05em;"><span style="top:-1.8723em;margin-left:0em;"><span class="pstrut" style="height:3.05em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span style="top:-3.05em;"><span class="pstrut" style="height:3.05em;"></span><span><span class="mop op-symbol large-op">∑</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.2777em;"><span></span></span></span></span></span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.7959em;"><span style="top:-2.4231em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span><span style="top:-3.0448em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.2769em;"><span></span></span></span></span></span></span></span></span><span style="top:-3.48em;"><span class="pstrut" style="height:5em;"></span><span class="hide-tail" style="min-width:1.02em;height:3.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="3.08em" viewBox="0 0 400000 3240" preserveAspectRatio="xMinYMin slice"><path d="M473,2793
+c339.3,-1799.3,509.3,-2700,510,-2702 l0 -0
+c3.3,-7.3,9.3,-11,18,-11 H400000v40H1017.7
+s-90.5,478,-276.2,1466c-185.7,988,-279.5,1483,-281.5,1485c-2,6,-10,9,-24,9
+c-8,0,-12,-0.7,-12,-2c0,-1.3,-5.3,-32,-16,-92c-50.7,-293.3,-119.7,-693.3,-207,-1200
+c0,-1.3,-5.3,8.7,-16,30c-10.7,21.3,-21.3,42.7,-32,64s-16,33,-16,33s-26,-26,-26,-26
+s76,-153,76,-153s77,-151,77,-151c0.7,0.7,35.7,202,105,604c67.3,400.7,102,602.7,104,
+606zM1001 80h400000v40H1017.7z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:1.52em;"><span></span></span></span></span></span></span></span></span></span></p>
+<p>where <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">w_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.5806em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02691em;">w</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0269em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> are the weights and <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>q</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">q_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> are the normalized quality scores for each input variable.</p>
+<hr>
+<h2 id="-model-overview">🧠 Model Overview</h2>
+<p>The WQM models were implemented using a <strong>Kolmogorov–Arnold Network (KAN)</strong> to approximate the nonlinear WQI formulation through data-driven learning. Both <strong>full</strong> and <strong>pruned</strong> KAN models were trained, and their <strong>symbolic expressions</strong> were extracted to ensure interpretability and transparency.</p>
+<hr>
+<h2 id="-dataset-description">📊 Dataset Description</h2>
+<ul>
+<li>
+<p><strong>Source</strong>:
+<a href="https://doi.org/10.1016/j.dib.2023.109248">A simple dataset of water quality on aquaponic fish ponds based on an internet of things measurement device</a></p>
+</li>
+<li>
+<p><strong>Sensor Variables</strong>:</p>
+<ul>
+<li><code>pH</code>: Water pH</li>
+<li><code>water_temp</code>: Water temperature (°C)</li>
+<li><code>TDS</code>: Total dissolved solids (ppm)</li>
+</ul>
+</li>
+<li>
+<p><strong>Target Variable</strong>:</p>
+<ul>
+<li><code>WQI</code>: Computed from quality scores using the WQM method</li>
+</ul>
+</li>
+<li>
+<p><strong>Preprocessing</strong>:</p>
+<ul>
+<li>Conversion to quality scores (<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>q</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">q_i</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">i</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>)</li>
+<li>Temporal smoothing</li>
+<li>Outlier removal and imputation</li>
+<li>Final WQI standardization</li>
+</ul>
+</li>
+<li>
+<p><strong>Data Splits</strong>:</p>
+<ul>
+<li>Training: ~67%</li>
+<li>Validation: ~33%</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="️-model-details">⚙️ Model Details</h2>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Inputs</th>
+<th>Symbolic Expression</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WQM (Full)</td>
+<td>pH, temp, TDS</td>
+<td>✅</td>
+<td>Includes all 3 quality scores</td>
+</tr>
+<tr>
+<td>WQM (Pruned)</td>
+<td>pH, temp</td>
+<td>✅</td>
+<td>TDS excluded due to limited contribution</td>
+</tr>
+</tbody>
+</table>
+<p>All symbolic forms are <strong>extracted from the trained KAN models</strong> and available in the project notebooks.</p>
+<hr>
+<h2 id="-performance-validation-set">📈 Performance (Validation Set)</h2>
+<p>Fifteen baseline models were tested using <strong>LazyPredict</strong>. Top-performing models were selected and compared against the symbolic output of the pruned KAN.</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>R²</th>
+<th>MAE</th>
+<th>RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KAN-Symbolic</td>
+<td>1.000</td>
+<td>0.169</td>
+<td>0.201</td>
+</tr>
+<tr>
+<td>MLPRegressor</td>
+<td>0.998</td>
+<td>0.241</td>
+<td>0.453</td>
+</tr>
+<tr>
+<td>KAN-Model</td>
+<td>0.985</td>
+<td>0.585</td>
+<td>1.250</td>
+</tr>
+<tr>
+<td>RandomForestRegressor</td>
+<td>0.882</td>
+<td>2.071</td>
+<td>3.464</td>
+</tr>
+<tr>
+<td>BaggingRegressor</td>
+<td>0.880</td>
+<td>2.115</td>
+<td>3.499</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-temporal-cross-validation-cv">🧪 Temporal cross-validation (CV)</h2>
+<p>To assess the temporal robustness of the trained KAN models, we conducted a <strong>sliding-window cross-validation</strong> on a held-out segment of the dataset.</p>
+<ul>
+<li><strong>Training period</strong>: <code>2023-01-30 12:00:00</code> to <code>2023-02-05 12:00:00</code></li>
+<li><strong>Evaluation period</strong>: <code>2023-03-01 12:00:00</code> to <code>2023-03-08 12:00:00</code></li>
+</ul>
+<p>We applied <strong>5 overlapping folds</strong> across the final 3.5 days of data, each spanning a 2-day window and shifting forward by 8 hours. This approach ensures a realistic, forward-only prediction setting with no data leakage.</p>
+<h3 id="-sliding-window-folds">🔁 Sliding window folds</h3>
+<table>
+<thead>
+<tr>
+<th>Fold</th>
+<th>Start Date &amp; Time</th>
+<th>End Date &amp; Time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2023-03-04 00:00:00</td>
+<td>2023-03-05 23:59:00</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2023-03-04 08:00:00</td>
+<td>2023-03-06 07:59:00</td>
+</tr>
+<tr>
+<td>3</td>
+<td>2023-03-04 16:00:00</td>
+<td>2023-03-06 15:59:00</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2023-03-05 00:00:00</td>
+<td>2023-03-06 23:59:00</td>
+</tr>
+<tr>
+<td>5</td>
+<td>2023-03-05 08:00:00</td>
+<td>2023-03-07 07:59:00</td>
+</tr>
+</tbody>
+</table>
+<p>This <strong>time-aware validation</strong> strategy is critical for real-world scenarios in which models must generalize to future sensor data under dynamic conditions.</p>
+<h3 id="-cross-validation-performance-summary-mean--std">📊 Cross-validation performance summary (mean ± std)</h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>R²</th>
+<th>MAE</th>
+<th>RMSE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>KAN-Symbolic</td>
+<td>0.998 ± 0.001</td>
+<td>0.449 ± 0.166</td>
+<td>0.685 ± 0.312</td>
+</tr>
+<tr>
+<td>MLPRegressor</td>
+<td>0.996 ± 0.001</td>
+<td>0.687 ± 0.226</td>
+<td>1.157 ± 0.266</td>
+</tr>
+<tr>
+<td>KAN-Model</td>
+<td>0.919 ± 0.100</td>
+<td>2.764 ± 1.507</td>
+<td>4.266 ± 2.152</td>
+</tr>
+<tr>
+<td>RandomForestRegressor</td>
+<td>0.904 ± 0.059</td>
+<td>4.141 ± 0.947</td>
+<td>5.218 ± 1.021</td>
+</tr>
+<tr>
+<td>BaggingRegressor</td>
+<td>0.902 ± 0.059</td>
+<td>4.205 ± 0.936</td>
+<td>5.281 ± 1.002</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="-intended-use">✅ Intended use</h2>
+<ul>
+<li>Provide a <strong>transparent baseline</strong> for WQI estimation using interpretable symbolic models</li>
+<li>Enable comparison with complex black-box models</li>
+<li>Serve as a foundation for <strong>hybrid modeling</strong> that combines physical formulas with learned components</li>
+</ul>
+<hr>
+<h2 id="️-limitations-and-scope-of-applicability">⚠️ Limitations and scope of applicability</h2>
+<p>These models are tailored for WQI estimation using three specific input variables. However, the same methodology — particularly KAN-based symbolic modeling — can be <strong>retrained and extended</strong> to other nonlinear applications involving environmental or sensor-based time series data.</p>
+<hr>
+<h2 id="-reproducibility">📦 Reproducibility</h2>
+<ul>
+<li><strong>Code</strong>: <code>./scripts/</code></li>
+<li><strong>Notebook</strong>: <code>/notebooks/case-study_02/Train_Evaluate_Models02.ipynb</code></li>
+<li><strong>Validation metrics</strong>: <code>models/model_cards/03_baseline_performance_WQM.csv</code></li>
+<li><strong>Temporal CV metrics</strong>: <code>models/model_cards/03a_cv-baseline_performance_WQM.csv</code></li>
+</ul>
+
+            <script async src="https://cdn.jsdelivr.net/npm/katex-copytex@latest/dist/katex-copytex.min.js"></script>
+            
+        </body>
+        </html>
